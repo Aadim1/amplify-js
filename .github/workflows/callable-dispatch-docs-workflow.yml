@@ -1,0 +1,20 @@
+name: Dispatch Docs Workflow
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Docs Repo Workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_DOCS_DISPATCH }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/Aadim1/docs/dispatches \
+            -d '{"event_type":"e2e-test-trigger"}'
